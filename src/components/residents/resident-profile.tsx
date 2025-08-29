@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Edit, Calendar, AlertTriangle, Activity, Pill, FileText, Target } from 'lucide-react';
+import { EditResidentForm } from './edit-resident-form';
 import { 
   getMockResident, 
   getMockMedicationsByResident, 
@@ -15,12 +16,14 @@ import {
   getMockProgressNotesByResident
 } from '@/lib/mock-data';
 import { formatDistanceToNow, format } from 'date-fns';
+import { useState } from 'react';
 
 interface ResidentProfileProps {
   residentId: string;
 }
 
 export function ResidentProfile({ residentId }: ResidentProfileProps) {
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const resident = getMockResident(residentId);
   const medications = getMockMedicationsByResident(residentId);
   const observations = getMockObservationsByResident(residentId);
@@ -60,7 +63,7 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
           <h1 className="text-3xl font-bold">{resident.preferredName || resident.fullName}</h1>
           <p className="text-muted-foreground">Resident Profile</p>
         </div>
-        <Button>
+        <Button onClick={() => setEditDialogOpen(true)}>
           <Edit className="h-4 w-4 mr-2" />
           Edit Profile
         </Button>
@@ -449,6 +452,13 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Edit Dialog */}
+      <EditResidentForm 
+        resident={resident}
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+      />
     </div>
   );
 }
