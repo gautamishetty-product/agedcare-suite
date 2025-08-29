@@ -166,7 +166,8 @@ export function NewResidentForm() {
                     <SelectContent>
                       <SelectItem value="permanent">Permanent</SelectItem>
                       <SelectItem value="respite">Respite</SelectItem>
-                      <SelectItem value="home">Home Care</SelectItem>
+                      <SelectItem value="home">Home</SelectItem>
+                      <SelectItem value="discharged">Discharged</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
