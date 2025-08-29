@@ -126,13 +126,14 @@ export const mockMedications: Medication[] = [
 ];
 
 export const mockObservations: Observation[] = [
+  // Recent observations (today)
   {
     id: '1',
     residentId: '1',
     type: 'BP',
     value: '145/90',
     unit: 'mmHg',
-    recordedAt: '2024-01-15T10:30:00Z',
+    recordedAt: '2024-01-15T14:30:00Z',
     recordedBy: 'Sarah Johnson, RN',
     thresholdFlag: 'HIGH'
   },
@@ -142,11 +143,258 @@ export const mockObservations: Observation[] = [
     type: 'TEMP',
     value: '36.8',
     unit: '°C',
-    recordedAt: '2024-01-15T10:30:00Z',
+    recordedAt: '2024-01-15T14:30:00Z',
     recordedBy: 'Sarah Johnson, RN'
   },
   {
     id: '3',
+    residentId: '1',
+    type: 'HR',
+    value: '78',
+    unit: 'bpm',
+    recordedAt: '2024-01-15T14:30:00Z',
+    recordedBy: 'Sarah Johnson, RN'
+  },
+  {
+    id: '4',
+    residentId: '1',
+    type: 'RR',
+    value: '18',
+    unit: '/min',
+    recordedAt: '2024-01-15T14:30:00Z',
+    recordedBy: 'Sarah Johnson, RN'
+  },
+  {
+    id: '5',
+    residentId: '1',
+    type: 'SPO2',
+    value: '97',
+    unit: '%',
+    recordedAt: '2024-01-15T14:30:00Z',
+    recordedBy: 'Sarah Johnson, RN'
+  },
+  {
+    id: '6',
+    residentId: '1',
+    type: 'WEIGHT',
+    value: '68.5',
+    unit: 'kg',
+    recordedAt: '2024-01-15T14:30:00Z',
+    recordedBy: 'Sarah Johnson, RN'
+  },
+  {
+    id: '7',
+    residentId: '1',
+    type: 'BSL',
+    value: '6.2',
+    unit: 'mmol/L',
+    recordedAt: '2024-01-15T14:30:00Z',
+    recordedBy: 'Sarah Johnson, RN'
+  },
+  {
+    id: '8',
+    residentId: '1',
+    type: 'PAIN',
+    value: '3',
+    unit: '/10',
+    recordedAt: '2024-01-15T14:30:00Z',
+    recordedBy: 'Sarah Johnson, RN'
+  },
+
+  // Morning observations (same day)
+  {
+    id: '9',
+    residentId: '1',
+    type: 'BP',
+    value: '138/85',
+    unit: 'mmHg',
+    recordedAt: '2024-01-15T08:00:00Z',
+    recordedBy: 'Emma Wilson, EN'
+  },
+  {
+    id: '10',
+    residentId: '1',
+    type: 'TEMP',
+    value: '36.6',
+    unit: '°C',
+    recordedAt: '2024-01-15T08:00:00Z',
+    recordedBy: 'Emma Wilson, EN'
+  },
+  {
+    id: '11',
+    residentId: '1',
+    type: 'HR',
+    value: '82',
+    unit: 'bpm',
+    recordedAt: '2024-01-15T08:00:00Z',
+    recordedBy: 'Emma Wilson, EN'
+  },
+  {
+    id: '12',
+    residentId: '1',
+    type: 'SPO2',
+    value: '98',
+    unit: '%',
+    recordedAt: '2024-01-15T08:00:00Z',
+    recordedBy: 'Emma Wilson, EN'
+  },
+
+  // Yesterday's observations
+  {
+    id: '13',
+    residentId: '1',
+    type: 'BP',
+    value: '142/88',
+    unit: 'mmHg',
+    recordedAt: '2024-01-14T20:00:00Z',
+    recordedBy: 'Michael Chen, RN',
+    thresholdFlag: 'HIGH'
+  },
+  {
+    id: '14',
+    residentId: '1',
+    type: 'TEMP',
+    value: '37.1',
+    unit: '°C',
+    recordedAt: '2024-01-14T20:00:00Z',
+    recordedBy: 'Michael Chen, RN'
+  },
+  {
+    id: '15',
+    residentId: '1',
+    type: 'HR',
+    value: '85',
+    unit: 'bpm',
+    recordedAt: '2024-01-14T20:00:00Z',
+    recordedBy: 'Michael Chen, RN'
+  },
+  {
+    id: '16',
+    residentId: '1',
+    type: 'RR',
+    value: '20',
+    unit: '/min',
+    recordedAt: '2024-01-14T20:00:00Z',
+    recordedBy: 'Michael Chen, RN'
+  },
+  {
+    id: '17',
+    residentId: '1',
+    type: 'SPO2',
+    value: '96',
+    unit: '%',
+    recordedAt: '2024-01-14T20:00:00Z',
+    recordedBy: 'Michael Chen, RN'
+  },
+  {
+    id: '18',
+    residentId: '1',
+    type: 'PAIN',
+    value: '5',
+    unit: '/10',
+    recordedAt: '2024-01-14T20:00:00Z',
+    recordedBy: 'Michael Chen, RN',
+    thresholdFlag: 'HIGH'
+  },
+
+  // Earlier yesterday
+  {
+    id: '19',
+    residentId: '1',
+    type: 'BP',
+    value: '135/82',
+    unit: 'mmHg',
+    recordedAt: '2024-01-14T12:00:00Z',
+    recordedBy: 'Lisa Anderson, EN'
+  },
+  {
+    id: '20',
+    residentId: '1',
+    type: 'TEMP',
+    value: '36.7',
+    unit: '°C',
+    recordedAt: '2024-01-14T12:00:00Z',
+    recordedBy: 'Lisa Anderson, EN'
+  },
+  {
+    id: '21',
+    residentId: '1',
+    type: 'WEIGHT',
+    value: '68.3',
+    unit: 'kg',
+    recordedAt: '2024-01-14T12:00:00Z',
+    recordedBy: 'Lisa Anderson, EN'
+  },
+  {
+    id: '22',
+    residentId: '1',
+    type: 'BSL',
+    value: '7.8',
+    unit: 'mmol/L',
+    recordedAt: '2024-01-14T12:00:00Z',
+    recordedBy: 'Lisa Anderson, EN',
+    thresholdFlag: 'HIGH'
+  },
+
+  // Day before yesterday
+  {
+    id: '23',
+    residentId: '1',
+    type: 'BP',
+    value: '140/85',
+    unit: 'mmHg',
+    recordedAt: '2024-01-13T16:30:00Z',
+    recordedBy: 'David Smith, RN'
+  },
+  {
+    id: '24',
+    residentId: '1',
+    type: 'TEMP',
+    value: '36.9',
+    unit: '°C',
+    recordedAt: '2024-01-13T16:30:00Z',
+    recordedBy: 'David Smith, RN'
+  },
+  {
+    id: '25',
+    residentId: '1',
+    type: 'HR',
+    value: '76',
+    unit: 'bpm',
+    recordedAt: '2024-01-13T16:30:00Z',
+    recordedBy: 'David Smith, RN'
+  },
+  {
+    id: '26',
+    residentId: '1',
+    type: 'RR',
+    value: '16',
+    unit: '/min',
+    recordedAt: '2024-01-13T16:30:00Z',
+    recordedBy: 'David Smith, RN'
+  },
+  {
+    id: '27',
+    residentId: '1',
+    type: 'SPO2',
+    value: '99',
+    unit: '%',
+    recordedAt: '2024-01-13T16:30:00Z',
+    recordedBy: 'David Smith, RN'
+  },
+  {
+    id: '28',
+    residentId: '1',
+    type: 'PAIN',
+    value: '2',
+    unit: '/10',
+    recordedAt: '2024-01-13T16:30:00Z',
+    recordedBy: 'David Smith, RN'
+  },
+
+  // Other residents
+  {
+    id: '29',
     residentId: '2',
     type: 'SPO2',
     value: '94',
@@ -154,6 +402,24 @@ export const mockObservations: Observation[] = [
     recordedAt: '2024-01-15T14:00:00Z',
     recordedBy: 'Michael Chen, EN',
     thresholdFlag: 'LOW'
+  },
+  {
+    id: '30',
+    residentId: '2',
+    type: 'BP',
+    value: '120/75',
+    unit: 'mmHg',
+    recordedAt: '2024-01-15T14:00:00Z',
+    recordedBy: 'Michael Chen, EN'
+  },
+  {
+    id: '31',
+    residentId: '2',
+    type: 'TEMP',
+    value: '36.5',
+    unit: '°C',
+    recordedAt: '2024-01-15T14:00:00Z',
+    recordedBy: 'Michael Chen, EN'
   }
 ];
 
