@@ -42,6 +42,7 @@ import { DemographicsForm } from './demographics-form';
 import { AboutForm } from './about-form';
 import { ClinicalProfileForm } from './clinical-profile-form';
 import { MedicationManager } from './medication-manager';
+import { ObservationManager } from './observation-manager';
 import { formatDistanceToNow, format } from 'date-fns';
 import { useState } from 'react';
 
@@ -304,7 +305,17 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
           />
         </TabsContent>
 
-        <TabsContent value="observations" className="space-y-4">
+        <TabsContent value="observations" className="space-y-6">
+          <ObservationManager
+            observations={observations}
+            residentId={resident.id}
+            onSave={(updatedObservations) => {
+              console.log('Updated observations:', updatedObservations);
+            }}
+          />
+        </TabsContent>
+
+        <TabsContent value="clinical" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
