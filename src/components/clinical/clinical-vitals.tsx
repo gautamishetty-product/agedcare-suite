@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Search, Plus, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
 import { mockObservations, mockResidents } from '@/lib/mock-data';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 export function ClinicalVitals() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -53,9 +54,11 @@ export function ClinicalVitals() {
           <h1 className="text-3xl font-bold">Vital Signs</h1>
           <p className="text-muted-foreground">Monitor and track resident vital signs</p>
         </div>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          Record Vitals
+        <Button asChild>
+          <Link to="/clinical/vitals/new">
+            <Plus className="h-4 w-4 mr-2" />
+            Record Vitals
+          </Link>
         </Button>
       </div>
 
