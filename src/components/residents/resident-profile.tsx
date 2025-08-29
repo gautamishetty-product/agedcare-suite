@@ -315,6 +315,150 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
           </Card>
         </TabsContent>
 
+        <TabsContent value="clinical" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Progress Notes */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Recent Progress Notes
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {progressNotes.slice(0, 5).map((note) => (
+                    <div key={note.id} className="p-3 border rounded-lg">
+                      <div className="flex justify-between items-start mb-2">
+                        <Badge variant="outline" className="text-xs">
+                          {note.type}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+                          {format(new Date(note.recordedAt), 'dd/MM/yyyy HH:mm')}
+                        </span>
+                      </div>
+                      <p className="text-sm mb-2">{note.content}</p>
+                      <div className="text-xs text-muted-foreground">
+                        By: {note.recordedBy}
+                        {note.isConfidential && (
+                          <Badge variant="secondary" className="ml-2 text-xs">
+                            Confidential
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {progressNotes.length === 0 && (
+                    <p className="text-center text-muted-foreground py-8">
+                      No progress notes recorded
+                    </p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recent Vitals Summary */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="h-5 w-5" />
+                  Latest Vitals
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {observations.slice(0, 6).map((obs) => (
+                    <div key={obs.id} className="flex items-center justify-between p-2 border rounded">
+                      <div>
+                        <span className="font-medium text-sm">{obs.type}</span>
+                        <div className="text-xs text-muted-foreground">
+                          {format(new Date(obs.recordedAt), 'dd/MM HH:mm')}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-medium">{obs.value} {obs.unit}</div>
+                        {obs.thresholdFlag && (
+                          <Badge 
+                            variant={obs.thresholdFlag === 'CRITICAL' ? 'destructive' : 'secondary'}
+                            className="text-xs"
+                          >
+                            {obs.thresholdFlag}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {observations.length === 0 && (
+                    <p className="text-center text-muted-foreground py-8">
+                      No recent vitals recorded
+                    </p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Clinical Summary */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Clinical Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <h4 className="font-medium mb-2">Current Status</h4>
+                  <div className="space-y-1 text-sm">
+                    <div>Cognitive: {resident.cognitiveStatus}</div>
+                    <div>Mobility: {resident.mobilityStatus}</div>
+                    {resident.lastVitalsDate && (
+                      <div>Last Vitals: {format(new Date(resident.lastVitalsDate), 'dd/MM/yyyy')}</div>
+                    )}
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium mb-2">Active Medications</h4>
+                  <div className="text-sm">
+                    {medications.length > 0 ? (
+                      <div>{medications.length} active medication{medications.length !== 1 ? 's' : ''}</div>
+                    ) : (
+                      <div className="text-muted-foreground">No active medications</div>
+                    )}
+                    {medications.some(m => m.isPRN) && (
+                      <div className="text-xs text-muted-foreground">
+                        {medications.filter(m => m.isPRN).length} PRN medication{medications.filter(m => m.isPRN).length !== 1 ? 's' : ''}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium mb-2">Care Alerts</h4>
+                  <div className="space-y-1">
+                    {resident.allergies.length > 0 && (
+                      <Badge variant="destructive" className="text-xs block w-fit">
+                        {resident.allergies.length} Allerg{resident.allergies.length !== 1 ? 'ies' : 'y'}
+                      </Badge>
+                    )}
+                    {resident.isInfectionControl && (
+                      <Badge variant="secondary" className="text-xs block w-fit">
+                        Infection Control
+                      </Badge>
+                    )}
+                    {wounds.length > 0 && (
+                      <Badge variant="outline" className="text-xs block w-fit">
+                        {wounds.length} Active Wound{wounds.length !== 1 ? 's' : ''}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="care-plans" className="space-y-4">
           <Card>
             <CardHeader>
