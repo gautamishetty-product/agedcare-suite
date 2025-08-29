@@ -160,19 +160,19 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
 
       {/* Tabs */}
       <Tabs defaultValue="snapshot" className="w-full">
-        <TabsList className="grid w-full grid-cols-12 h-auto">
-          <TabsTrigger value="snapshot">Snapshot</TabsTrigger>
-          <TabsTrigger value="demographics">Demographics</TabsTrigger>
-          <TabsTrigger value="about">About</TabsTrigger>
-          <TabsTrigger value="clinical-profile">Clinical Profile</TabsTrigger>
-          <TabsTrigger value="medications">Medications</TabsTrigger>
-          <TabsTrigger value="observations">Observations</TabsTrigger>
-          <TabsTrigger value="clinical">Clinical</TabsTrigger>
-          <TabsTrigger value="care-plans">Care Plans</TabsTrigger>
-          <TabsTrigger value="wounds">Wounds</TabsTrigger>
-          <TabsTrigger value="incidents">Incidents</TabsTrigger>
-          <TabsTrigger value="assessments">Assessments</TabsTrigger>
-          <TabsTrigger value="legal">Legal/Financial</TabsTrigger>
+        <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground overflow-x-auto w-full">
+          <TabsTrigger value="snapshot" className="whitespace-nowrap">Snapshot</TabsTrigger>
+          <TabsTrigger value="demographics" className="whitespace-nowrap">Demographics</TabsTrigger>
+          <TabsTrigger value="about" className="whitespace-nowrap">About</TabsTrigger>
+          <TabsTrigger value="clinical-profile" className="whitespace-nowrap">Clinical Profile</TabsTrigger>
+          <TabsTrigger value="medications" className="whitespace-nowrap">Medications</TabsTrigger>
+          <TabsTrigger value="observations" className="whitespace-nowrap">Observations</TabsTrigger>
+          <TabsTrigger value="clinical" className="whitespace-nowrap">Clinical</TabsTrigger>
+          <TabsTrigger value="care-plans" className="whitespace-nowrap">Care Plans</TabsTrigger>
+          <TabsTrigger value="wounds" className="whitespace-nowrap">Wounds</TabsTrigger>
+          <TabsTrigger value="incidents" className="whitespace-nowrap">Incidents</TabsTrigger>
+          <TabsTrigger value="assessments" className="whitespace-nowrap">Assessments</TabsTrigger>
+          <TabsTrigger value="legal" className="whitespace-nowrap">Legal/Financial</TabsTrigger>
         </TabsList>
 
         <TabsContent value="snapshot" className="space-y-4">
