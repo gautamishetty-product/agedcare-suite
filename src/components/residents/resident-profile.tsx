@@ -36,7 +36,7 @@ import {
   getMockIncidentsByResident,
   getMockProgressNotesByResident
 } from '@/lib/mock-data';
-import { CarePlanManager } from './care-plan-manager';
+import CarePlanManager from './care-plan-manager';
 import { EditResidentForm } from './edit-resident-form';
 import { DemographicsForm } from './demographics-form';
 import { AboutForm } from './about-form';
@@ -324,7 +324,7 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CarePlanManager residentId={resident.id} />
+              <CarePlanManager residentId={residentId} />
             </CardContent>
           </Card>
         </TabsContent>

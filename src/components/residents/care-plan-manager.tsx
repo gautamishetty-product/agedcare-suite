@@ -442,3 +442,5 @@ const CarePlanDetails = ({ revision }: CarePlanDetailsProps) => {
     </div>
   );
 };
+
+export default CarePlanManager;
