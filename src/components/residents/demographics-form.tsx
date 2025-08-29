@@ -110,11 +110,22 @@ export const DemographicsForm = ({ resident, onSave }: DemographicsFormProps) =>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <Label htmlFor="pensionType">Pension Type</Label>
-            <Input
-              id="pensionType"
-              value={formData.pensionType || ''}
-              onChange={(e) => handleInputChange('pensionType', e.target.value)}
-            />
+            <Select value={formData.pensionType || ''} onValueChange={(value) => handleInputChange('pensionType', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select pension type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="age-pension">Age Pension</SelectItem>
+                <SelectItem value="disability-pension">Disability Support Pension</SelectItem>
+                <SelectItem value="veterans-pension">Veterans' Affairs Pension</SelectItem>
+                <SelectItem value="carer-pension">Carer Payment</SelectItem>
+                <SelectItem value="widow-pension">Widow Allowance</SelectItem>
+                <SelectItem value="partial-pension">Partial Pension</SelectItem>
+                <SelectItem value="self-funded">Self-Funded Retiree</SelectItem>
+                <SelectItem value="none">No Pension</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <Label htmlFor="roomNumber">Room Number</Label>
