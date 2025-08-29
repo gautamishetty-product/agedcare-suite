@@ -258,12 +258,12 @@ export const ObservationManager = ({ observations, residentId, onSave }: Observa
                 </div>
                 <div>
                   <Label htmlFor="thresholdFlag">Threshold Flag</Label>
-                  <Select value={formData.thresholdFlag || ''} onValueChange={(value) => handleInputChange('thresholdFlag', value || undefined)}>
+                  <Select value={formData.thresholdFlag || 'none'} onValueChange={(value) => handleInputChange('thresholdFlag', value === 'none' ? undefined : value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="None" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">None</SelectItem>
+                      <SelectItem value="none">None</SelectItem>
                       <SelectItem value="HIGH">High</SelectItem>
                       <SelectItem value="LOW">Low</SelectItem>
                       <SelectItem value="CRITICAL">Critical</SelectItem>
