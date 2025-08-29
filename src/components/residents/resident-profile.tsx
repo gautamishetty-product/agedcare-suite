@@ -1,20 +1,47 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
-import { Edit, Calendar, AlertTriangle, Activity, Pill, FileText, Target } from 'lucide-react';
-import { EditResidentForm } from './edit-resident-form';
+import { Button } from '@/components/ui/button';
+import { 
+  Calendar, 
+  MapPin, 
+  Phone, 
+  FileText, 
+  AlertTriangle, 
+  Shield, 
+  Heart,
+  Activity,
+  Pill,
+  ClipboardList,
+  FileHeart,
+  Bandage,
+  AlertCircle,
+  Stethoscope,
+  TrendingUp,
+  Clock,
+  User,
+  UserPlus,
+  FileUser,
+  Scale,
+  UserCheck,
+  Edit,
+  Target
+} from 'lucide-react';
 import { 
   getMockResident, 
   getMockMedicationsByResident, 
   getMockObservationsByResident,
+  getMockCarePlansByResident,
   getMockWoundsByResident,
   getMockIncidentsByResident,
-  getMockCarePlansByResident,
   getMockProgressNotesByResident
 } from '@/lib/mock-data';
+import { EditResidentForm } from './edit-resident-form';
+import { DemographicsForm } from './demographics-form';
+import { AboutForm } from './about-form';
+import { ClinicalProfileForm } from './clinical-profile-form';
+import { MedicationManager } from './medication-manager';
 import { formatDistanceToNow, format } from 'date-fns';
 import { useState } from 'react';
 
@@ -132,15 +159,20 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
       </Card>
 
       {/* Tabs */}
-      <Tabs defaultValue="snapshot" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-7">
+      <Tabs defaultValue="snapshot" className="w-full">
+        <TabsList className="grid w-full grid-cols-12 h-auto">
           <TabsTrigger value="snapshot">Snapshot</TabsTrigger>
-          <TabsTrigger value="clinical">Clinical</TabsTrigger>
+          <TabsTrigger value="demographics">Demographics</TabsTrigger>
+          <TabsTrigger value="about">About</TabsTrigger>
+          <TabsTrigger value="clinical-profile">Clinical Profile</TabsTrigger>
           <TabsTrigger value="medications">Medications</TabsTrigger>
           <TabsTrigger value="observations">Observations</TabsTrigger>
+          <TabsTrigger value="clinical">Clinical</TabsTrigger>
+          <TabsTrigger value="care-plans">Care Plans</TabsTrigger>
           <TabsTrigger value="wounds">Wounds</TabsTrigger>
           <TabsTrigger value="incidents">Incidents</TabsTrigger>
-          <TabsTrigger value="care-plans">Care Plans</TabsTrigger>
+          <TabsTrigger value="assessments">Assessments</TabsTrigger>
+          <TabsTrigger value="legal">Legal/Financial</TabsTrigger>
         </TabsList>
 
         <TabsContent value="snapshot" className="space-y-4">
@@ -234,7 +266,45 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
           </Card>
         </TabsContent>
 
-        <TabsContent value="medications" className="space-y-4">
+        <TabsContent value="demographics" className="space-y-6">
+          <DemographicsForm 
+            resident={resident} 
+            onSave={(updatedResident) => {
+              console.log('Updated resident:', updatedResident);
+            }} 
+          />
+        </TabsContent>
+
+        <TabsContent value="about" className="space-y-6">
+          <AboutForm 
+            residentId={resident.id} 
+            onSave={(about) => {
+              console.log('Updated about:', about);
+            }} 
+          />
+        </TabsContent>
+
+        <TabsContent value="clinical-profile" className="space-y-6">
+          <ClinicalProfileForm 
+            residentId={resident.id} 
+            onSave={(profile) => {
+              console.log('Updated clinical profile:', profile);
+            }} 
+          />
+        </TabsContent>
+
+        <TabsContent value="medications" className="space-y-6">
+          <MedicationManager
+            medications={medications}
+            residentId={resident.id}
+            allergies={resident.allergies}
+            onSave={(updatedMedications) => {
+              console.log('Updated medications:', updatedMedications);
+            }}
+          />
+        </TabsContent>
+
+        <TabsContent value="observations" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -591,6 +661,99 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
                     No incidents recorded
                   </p>
                 )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="assessments" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ClipboardList className="h-5 w-5" />
+                Clinical Assessments
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base">MMSE</CardTitle>
+                      <CardDescription>Mini-Mental State Examination</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between">
+                        <span className="text-2xl font-bold">24/30</span>
+                        <Badge variant="outline">Mild Impairment</Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Last assessed: 2024-01-15
+                      </p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base">Braden Scale</CardTitle>
+                      <CardDescription>Pressure Ulcer Risk Assessment</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between">
+                        <span className="text-2xl font-bold">18/23</span>
+                        <Badge variant="secondary">Mild Risk</Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Last assessed: 2024-01-20
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="legal" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileUser className="h-5 w-5" />
+                Legal & Financial Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium mb-3">Power of Attorney</h4>
+                  <div className="space-y-2">
+                    <p className="text-sm"><strong>Name:</strong> Sarah Johnson</p>
+                    <p className="text-sm"><strong>Type:</strong> Financial & Medical</p>
+                    <p className="text-sm"><strong>Contact:</strong> (555) 123-4567</p>
+                    <Badge variant="outline">Documents on file</Badge>
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium mb-3">Guardianship</h4>
+                  <div className="space-y-2">
+                    <p className="text-sm text-muted-foreground">Not applicable</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-medium mb-3">Advance Directives</h4>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Badge variant={resident.hasAdvanceDirective ? "default" : "outline"}>
+                      {resident.hasAdvanceDirective ? "On File" : "Not Available"}
+                    </Badge>
+                    {resident.hasAdvanceDirective && (
+                      <span className="text-sm text-muted-foreground">Last reviewed: 2024-01-10</span>
+                    )}
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
