@@ -574,64 +574,36 @@ export const ObservationManager = ({ observations, residentId, onSave }: Observa
               ))}
             </div>
 
-            {/* Recent Observations Timeline */}
+            {/* Quick Stats Summary */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5" />
-                  Recent Observations
+                  <BarChart3 className="h-5 w-5" />
+                  Quick Stats
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {sortedTimeKeys.slice(0, 5).map(timeKey => {
-                    const obsGroup = groupedObservations[timeKey];
-                    const firstObs = obsGroup[0];
-                    
-                    return (
-                      <div key={timeKey} className="flex items-center gap-4 p-4 border rounded-lg">
-                        <div className="flex-shrink-0 text-center">
-                          <div className="text-sm font-medium">
-                            {format(new Date(timeKey), 'dd/MM')}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {format(new Date(timeKey), 'HH:mm')}
-                          </div>
-                        </div>
-                        <Separator orientation="vertical" className="h-10" />
-                        <div className="flex-1 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                          {obsGroup.map(obs => (
-                            <div key={obs.id} className="flex items-center gap-2 min-w-0">
-                              {getObservationIcon(obs.type)}
-                              <div className="min-w-0 flex-1">
-                                <div className="text-xs text-muted-foreground">
-                                  {getVitalSignName(obs.type)}
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <span className="font-medium text-sm">
-                                    {obs.value} {obs.unit}
-                                  </span>
-                                  {obs.thresholdFlag && (
-                                    <Badge 
-                                      variant={getThresholdBadgeVariant(obs.thresholdFlag)} 
-                                      className="text-xs px-1 py-0"
-                                    >
-                                      {obs.thresholdFlag}
-                                    </Badge>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="flex-shrink-0 text-right">
-                          <Badge variant="outline" className="text-xs">
-                            {firstObs.recordedBy}
-                          </Badge>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center">
+                    <p className="text-2xl font-bold">{observations.length}</p>
+                    <p className="text-sm text-muted-foreground">Total Readings</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold">
+                      {vitalSignsStats.filter(stat => stat.latest?.thresholdFlag).length}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Current Alerts</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold">{sortedTimeKeys.length}</p>
+                    <p className="text-sm text-muted-foreground">Recording Sessions</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold">
+                      {sortedTimeKeys.length > 0 ? format(new Date(sortedTimeKeys[0]), 'dd/MM') : 'N/A'}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Last Session</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
