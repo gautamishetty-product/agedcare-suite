@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { CarePlan, CarePlanRevision, CarePlanStatus } from '@/lib/types';
 import { getMockCarePlansByResident, getMockCarePlanRevision } from '@/lib/mock-data';
+import { NewCarePlanForm } from './new-care-plan-form';
 import { format } from 'date-fns';
 
 interface CarePlanManagerProps {
@@ -68,6 +69,7 @@ export const CarePlanManager = ({ residentId }: CarePlanManagerProps) => {
   const [selectedPlan, setSelectedPlan] = useState<CarePlan | null>(null);
   const [selectedRevision, setSelectedRevision] = useState<CarePlanRevision | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isNewPlanFormOpen, setIsNewPlanFormOpen] = useState(false);
 
   useEffect(() => {
     const plans = getMockCarePlansByResident(residentId);
@@ -88,31 +90,39 @@ export const CarePlanManager = ({ residentId }: CarePlanManagerProps) => {
     return (achieved / revision.goals.length) * 100;
   };
 
+  const handleSaveNewPlan = (newPlan: CarePlan, newRevision: CarePlanRevision) => {
+    // In a real app, this would save to the backend
+    // For now, we'll just add to the local state
+    setCarePlans([...carePlans, newPlan]);
+    setIsNewPlanFormOpen(false);
+  };
+
   const activePlans = carePlans.filter(cp => cp.status === 'ACTIVE');
   const draftPlans = carePlans.filter(cp => cp.status === 'DRAFT' || cp.status === 'IN_REVIEW');
   const archivedPlans = carePlans.filter(cp => cp.status === 'ARCHIVED' || cp.status === 'REJECTED');
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              Care Plans
-            </CardTitle>
-            <CardDescription>
-              Comprehensive care planning and goal tracking
-            </CardDescription>
+    <>
+      <Card className="w-full">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Care Plans
+              </CardTitle>
+              <CardDescription>
+                Comprehensive care planning and goal tracking
+              </CardDescription>
+            </div>
+            <Button onClick={() => setIsNewPlanFormOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              New Care Plan
+            </Button>
           </div>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            New Care Plan
-          </Button>
-        </div>
-      </CardHeader>
+        </CardHeader>
 
-      <CardContent>
+        <CardContent>
         <Tabs defaultValue="active" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="active">Active ({activePlans.length})</TabsTrigger>
@@ -188,8 +198,16 @@ export const CarePlanManager = ({ residentId }: CarePlanManagerProps) => {
             )}
           </DialogContent>
         </Dialog>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+
+      <NewCarePlanForm
+        residentId={residentId}
+        isOpen={isNewPlanFormOpen}
+        onClose={() => setIsNewPlanFormOpen(false)}
+        onSave={handleSaveNewPlan}
+      />
+    </>
   );
 };
 
