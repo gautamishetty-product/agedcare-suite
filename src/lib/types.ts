@@ -266,13 +266,75 @@ export interface AuditLog {
 export interface CarePlan {
   id: string;
   residentId: string;
-  problem: string;
-  goals: string[];
-  interventions: string[];
+  title: string;
+  summary?: string;
+  status: CarePlanStatus;
   ownerRole: 'RN' | 'EN' | 'PCW' | 'ALLIED_HEALTH';
-  startDate: string;
-  reviewDate: string;
-  status: 'Active' | 'On Hold' | 'Completed' | 'Cancelled';
+  reviewCadenceDays?: number;
+  activeFrom?: string;
+  activeTo?: string;
+  currentRevisionId?: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+  updatedBy: string;
+}
+
+export type CarePlanStatus = 'DRAFT' | 'IN_REVIEW' | 'APPROVED' | 'ACTIVE' | 'REJECTED' | 'ARCHIVED';
+
+export interface CarePlanRevision {
+  id: string;
+  carePlanId: string;
+  version: number;
+  problems: CarePlanProblem[];
+  goals: CarePlanGoal[];
+  interventions: CarePlanIntervention[];
+  risks: CarePlanRisk[];
+  monitoring: CarePlanMonitoring[];
+  familySummary?: string;
+  notes?: string;
+  effectiveFrom?: string;
+  supersededAt?: string;
+  createdAt: string;
+  createdBy: string;
+}
+
+export interface CarePlanProblem {
+  title: string;
+  narrative: string;
+  evidence?: string;
+  diagnosisLink?: string;
+}
+
+export interface CarePlanGoal {
+  goal: string;
+  metric: string;
+  targetDate?: string;
+  status: 'Not Started' | 'In Progress' | 'Achieved' | 'Not Achieved';
+}
+
+export interface CarePlanIntervention {
+  action: string;
+  frequency: string;
+  responsibleRole: string;
+  taskLink?: string;
+  priority: 'Low' | 'Medium' | 'High';
+}
+
+export interface CarePlanRisk {
+  risk: string;
+  mitigation: string;
+  escalation: string;
+  level: 'Low' | 'Medium' | 'High' | 'Critical';
+}
+
+export interface CarePlanMonitoring {
+  what: string;
+  who: string;
+  frequency: string;
+  thresholds?: string;
+  alertsEnabled: boolean;
 }
 
 export interface Task {

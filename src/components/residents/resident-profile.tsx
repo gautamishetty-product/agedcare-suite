@@ -32,11 +32,11 @@ import {
   getMockResident, 
   getMockMedicationsByResident, 
   getMockObservationsByResident,
-  getMockCarePlansByResident,
   getMockWoundsByResident,
   getMockIncidentsByResident,
   getMockProgressNotesByResident
 } from '@/lib/mock-data';
+import { CarePlanManager } from './care-plan-manager';
 import { EditResidentForm } from './edit-resident-form';
 import { DemographicsForm } from './demographics-form';
 import { AboutForm } from './about-form';
@@ -57,7 +57,7 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
   const observations = getMockObservationsByResident(residentId);
   const wounds = getMockWoundsByResident(residentId);
   const incidents = getMockIncidentsByResident(residentId);
-  const carePlans = getMockCarePlansByResident(residentId);
+  
   const progressNotes = getMockProgressNotesByResident(residentId);
 
   if (!resident) {
@@ -324,50 +324,7 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {carePlans.map((plan) => (
-                  <div key={plan.id} className="p-4 border rounded-lg">
-                    <div className="flex justify-between items-start mb-3">
-                      <h4 className="font-medium">{plan.problem}</h4>
-                      <Badge variant={plan.status === 'Active' ? 'default' : 'secondary'}>
-                        {plan.status}
-                      </Badge>
-                    </div>
-                    
-                    <div className="space-y-2 text-sm">
-                      <div>
-                        <span className="font-medium">Goals: </span>
-                        <ul className="list-disc list-inside ml-4">
-                          {plan.goals.map((goal, index) => (
-                            <li key={index}>{goal}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      <div>
-                        <span className="font-medium">Interventions: </span>
-                        <ul className="list-disc list-inside ml-4">
-                          {plan.interventions.map((intervention, index) => (
-                            <li key={index}>{intervention}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      <div className="flex gap-4 text-xs text-muted-foreground">
-                        <span>Owner: {plan.ownerRole}</span>
-                        <span>Start: {format(new Date(plan.startDate), 'dd/MM/yyyy')}</span>
-                        <span>Review: {format(new Date(plan.reviewDate), 'dd/MM/yyyy')}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
-                {carePlans.length === 0 && (
-                  <p className="text-center text-muted-foreground py-8">
-                    No care plans recorded
-                  </p>
-                )}
-              </div>
+              <CarePlanManager residentId={resident.id} />
             </CardContent>
           </Card>
         </TabsContent>

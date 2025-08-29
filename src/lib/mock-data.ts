@@ -1,4 +1,4 @@
-import { Resident, Medication, Observation, Wound, Incident, CarePlan, Task, ProgressNote } from './types';
+import { Resident, Medication, Observation, Wound, Incident, CarePlan, CarePlanRevision, Task, ProgressNote } from './types';
 
 // Mock residents with realistic Australian data
 export const mockResidents: Resident[] = [
@@ -479,24 +479,246 @@ export const mockCarePlans: CarePlan[] = [
   {
     id: '1',
     residentId: '1',
-    problem: 'Risk of falls due to cognitive impairment',
-    goals: ['Prevent falls', 'Maintain mobility', 'Ensure safety'],
-    interventions: ['Bed alarm activated', 'Regular toileting rounds', 'Clear pathways'],
+    title: 'Falls Prevention Care Plan',
+    summary: 'Comprehensive plan to prevent falls and maintain resident safety while preserving mobility and independence.',
+    status: 'ACTIVE',
     ownerRole: 'RN',
-    startDate: '2024-01-01',
-    reviewDate: '2024-02-01',
-    status: 'Active'
+    reviewCadenceDays: 30,
+    activeFrom: '2024-01-01T00:00:00Z',
+    currentRevisionId: 'rev-1-v2',
+    tags: ['falls', 'safety', 'mobility'],
+    createdAt: '2024-01-01T09:00:00Z',
+    updatedAt: '2024-01-15T10:30:00Z',
+    createdBy: 'Sarah Johnson, RN',
+    updatedBy: 'Sarah Johnson, RN'
   },
   {
     id: '2',
     residentId: '4',
-    problem: 'Pressure injury prevention',
-    goals: ['Prevent pressure injuries', 'Maintain skin integrity'],
-    interventions: ['2-hourly turns', 'Pressure relieving mattress', 'Skin assessment daily'],
+    title: 'Pressure Injury Prevention',
+    summary: 'Preventive care plan to maintain skin integrity and prevent pressure injuries for bed-bound resident.',
+    status: 'ACTIVE',
     ownerRole: 'RN',
-    startDate: '2024-01-10',
-    reviewDate: '2024-02-10',
-    status: 'Active'
+    reviewCadenceDays: 14,
+    activeFrom: '2024-01-10T00:00:00Z',
+    currentRevisionId: 'rev-2-v1',
+    tags: ['pressure-injury', 'skin', 'prevention'],
+    createdAt: '2024-01-10T14:00:00Z',
+    updatedAt: '2024-01-10T14:00:00Z',
+    createdBy: 'Michael Chen, RN',
+    updatedBy: 'Michael Chen, RN'
+  },
+  {
+    id: '3',
+    residentId: '1',
+    title: 'Dementia Behavioral Support',
+    summary: 'Person-centered care plan to manage behavioral symptoms and support quality of life.',
+    status: 'DRAFT',
+    ownerRole: 'RN',
+    reviewCadenceDays: 21,
+    tags: ['dementia', 'behavioral', 'psychosocial'],
+    createdAt: '2024-01-14T11:00:00Z',
+    updatedAt: '2024-01-15T16:45:00Z',
+    createdBy: 'Emma Wilson, EN',
+    updatedBy: 'Emma Wilson, EN'
+  }
+];
+
+export const mockCarePlanRevisions: CarePlanRevision[] = [
+  {
+    id: 'rev-1-v2',
+    carePlanId: '1',
+    version: 2,
+    problems: [
+      {
+        title: 'High risk of falls',
+        narrative: 'Resident has moderate cognitive impairment and requires assistance with mobility. Previous fall recorded in December 2023.',
+        evidence: 'MORSE Score: 45 (High Risk), History of falls, Cognitive impairment',
+        diagnosisLink: 'F03.90'
+      }
+    ],
+    goals: [
+      {
+        goal: 'Prevent falls while maintaining mobility and independence',
+        metric: 'Zero falls over 30-day period',
+        targetDate: '2024-02-01',
+        status: 'In Progress'
+      },
+      {
+        goal: 'Maintain current mobility level',
+        metric: 'Able to walk 20m with assistance daily',
+        targetDate: '2024-02-15',
+        status: 'In Progress'
+      },
+      {
+        goal: 'Increase resident confidence in mobility',
+        metric: 'Resident reports feeling safe during transfers',
+        status: 'Not Started'
+      }
+    ],
+    interventions: [
+      {
+        action: 'Bed alarm activated at night and during rest periods',
+        frequency: '24/7 when in bed',
+        responsibleRole: 'All staff',
+        priority: 'High'
+      },
+      {
+        action: 'Toileting rounds every 2 hours during day',
+        frequency: '2 hourly 0800-2000',
+        responsibleRole: 'PCW',
+        priority: 'High'
+      },
+      {
+        action: 'Clear pathways and adequate lighting',
+        frequency: 'Ongoing environmental check',
+        responsibleRole: 'All staff',
+        priority: 'Medium'
+      },
+      {
+        action: 'Physiotherapy assessment for mobility aids',
+        frequency: 'Weekly',
+        responsibleRole: 'Physiotherapist',
+        priority: 'Medium'
+      }
+    ],
+    risks: [
+      {
+        risk: 'Fall resulting in fracture or head injury',
+        mitigation: 'Bed alarm, frequent checks, clear pathways, appropriate footwear',
+        escalation: 'If fall occurs: complete incident report, medical assessment, family notification',
+        level: 'High'
+      },
+      {
+        risk: 'Loss of independence due to over-restriction',
+        mitigation: 'Encourage supervised mobility, regular PT assessment',
+        escalation: 'Monthly review of restrictions with multidisciplinary team',
+        level: 'Medium'
+      }
+    ],
+    monitoring: [
+      {
+        what: 'Falls incidents and near misses',
+        who: 'All nursing staff',
+        frequency: 'Continuous',
+        thresholds: 'Any fall or near miss requires immediate reporting',
+        alertsEnabled: true
+      },
+      {
+        what: 'Mobility assessment',
+        who: 'RN',
+        frequency: 'Weekly',
+        thresholds: 'Deterioration in mobility or increased assistance needs',
+        alertsEnabled: true
+      },
+      {
+        what: 'MORSE fall risk score',
+        who: 'RN',
+        frequency: 'Monthly or after any incident',
+        thresholds: 'Score >25 requires care plan review',
+        alertsEnabled: true
+      }
+    ],
+    familySummary: 'We are working with Maggie to keep her safe while maintaining her ability to move around. We use a bed alarm to alert us if she gets up at night, and our staff check on her regularly. We also make sure her walking areas are clear and well-lit.',
+    notes: 'Updated plan following multidisciplinary team meeting. Physiotherapy recommends continuing current interventions with weekly mobility assessment.',
+    effectiveFrom: '2024-01-15T00:00:00Z',
+    createdAt: '2024-01-15T10:30:00Z',
+    createdBy: 'Sarah Johnson, RN'
+  },
+  {
+    id: 'rev-2-v1',
+    carePlanId: '2',
+    version: 1,
+    problems: [
+      {
+        title: 'High risk of pressure injury development',
+        narrative: 'Bed-bound resident with limited mobility, poor nutritional status, and existing Stage 2 pressure injury on left heel.',
+        evidence: 'Braden Score: 12 (High Risk), Existing pressure injury, Bed-bound status',
+        diagnosisLink: 'C78.00'
+      }
+    ],
+    goals: [
+      {
+        goal: 'Prevent new pressure injuries',
+        metric: 'No new pressure injuries over 14-day period',
+        targetDate: '2024-01-24',
+        status: 'In Progress'
+      },
+      {
+        goal: 'Heal existing pressure injury',
+        metric: 'Left heel injury shows signs of healing',
+        targetDate: '2024-02-10',
+        status: 'In Progress'
+      }
+    ],
+    interventions: [
+      {
+        action: '2-hourly position changes',
+        frequency: 'Every 2 hours, 24/7',
+        responsibleRole: 'All nursing staff',
+        priority: 'High'
+      },
+      {
+        action: 'Pressure relieving mattress in use',
+        frequency: 'Continuous',
+        responsibleRole: 'All staff',
+        priority: 'High'
+      },
+      {
+        action: 'Daily skin assessment',
+        frequency: 'Daily',
+        responsibleRole: 'RN',
+        priority: 'High'
+      },
+      {
+        action: 'Nutrition support and hydration monitoring',
+        frequency: 'Daily',
+        responsibleRole: 'EN',
+        priority: 'Medium'
+      }
+    ],
+    risks: [
+      {
+        risk: 'Development of additional pressure injuries',
+        mitigation: 'Regular repositioning, pressure relieving devices, skin monitoring',
+        escalation: 'Any new areas of concern require immediate RN assessment',
+        level: 'High'
+      },
+      {
+        risk: 'Deterioration of existing wound',
+        mitigation: 'Daily dressing changes, wound monitoring, medical review',
+        escalation: 'Signs of infection or non-healing require medical review',
+        level: 'Medium'
+      }
+    ],
+    monitoring: [
+      {
+        what: 'Skin condition and pressure points',
+        who: 'RN',
+        frequency: 'Daily',
+        thresholds: 'Any new redness or breakdown',
+        alertsEnabled: true
+      },
+      {
+        what: 'Existing wound healing progress',
+        who: 'RN',
+        frequency: 'Daily',
+        thresholds: 'No improvement after 7 days or signs of infection',
+        alertsEnabled: true
+      },
+      {
+        what: 'Braden risk assessment',
+        who: 'RN',
+        frequency: 'Weekly',
+        thresholds: 'Score <13 requires plan review',
+        alertsEnabled: true
+      }
+    ],
+    familySummary: 'We are taking special care to prevent pressure sores and help Bob\'s existing wound heal. Our nurses turn him every 2 hours and check his skin daily. He has a special mattress to reduce pressure.',
+    notes: 'Wound clinic referral made. Family educated on pressure injury prevention.',
+    effectiveFrom: '2024-01-10T00:00:00Z',
+    createdAt: '2024-01-10T14:00:00Z',
+    createdBy: 'Michael Chen, RN'
   }
 ];
 
@@ -567,6 +789,10 @@ export const getMockIncidentsByResident = (residentId: string) =>
   mockIncidents.filter(i => i.residentId === residentId);
 export const getMockCarePlansByResident = (residentId: string) => 
   mockCarePlans.filter(cp => cp.residentId === residentId);
+export const getMockCarePlanRevisions = (carePlanId: string) =>
+  mockCarePlanRevisions.filter(rev => rev.carePlanId === carePlanId);
+export const getMockCarePlanRevision = (revisionId: string) =>
+  mockCarePlanRevisions.find(rev => rev.id === revisionId);
 export const getMockTasksByResident = (residentId: string) => 
   mockTasks.filter(t => t.residentId === residentId);
 export const getMockProgressNotesByResident = (residentId: string) => 
