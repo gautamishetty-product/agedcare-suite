@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Search, Plus, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
 import { mockObservations, mockResidents } from '@/lib/mock-data';
 import { format } from 'date-fns';
@@ -175,45 +176,118 @@ export function ClinicalVitals() {
             {filteredObservations.map((observation) => {
               const resident = mockResidents.find(r => r.id === observation.residentId);
               return (
-                <div key={observation.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50">
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src={resident?.photoUrl} alt={resident?.fullName} />
-                      <AvatarFallback>{getInitials(resident?.fullName || '')}</AvatarFallback>
-                    </Avatar>
+                <Dialog key={observation.id}>
+                  <DialogTrigger asChild>
+                    <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
+                      <div className="flex items-center gap-4">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={resident?.photoUrl} alt={resident?.fullName} />
+                          <AvatarFallback>{getInitials(resident?.fullName || '')}</AvatarFallback>
+                        </Avatar>
+                        
+                        <div>
+                          <div className="font-medium">{resident?.preferredName || resident?.fullName}</div>
+                          <div className="text-sm text-muted-foreground">
+                            Room {resident?.roomNumber}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <div className="text-center">
+                          <div className="text-sm font-medium">{observation.type}</div>
+                          <div className="text-lg font-bold">
+                            {observation.value} {observation.unit}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          {getThresholdIcon(observation.thresholdFlag)}
+                          {observation.thresholdFlag && (
+                            <Badge variant={getThresholdColor(observation.thresholdFlag)}>
+                              {observation.thresholdFlag}
+                            </Badge>
+                          )}
+                        </div>
+
+                        <div className="text-right text-sm text-muted-foreground">
+                          <div>{format(new Date(observation.recordedAt), 'dd/MM/yyyy')}</div>
+                          <div>{format(new Date(observation.recordedAt), 'HH:mm')}</div>
+                          <div className="text-xs">{observation.recordedBy}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl">
+                    <DialogHeader>
+                      <DialogTitle>Vital Signs Details</DialogTitle>
+                      <DialogDescription>
+                        Detailed information for {resident?.preferredName || resident?.fullName}'s {observation.type} reading
+                      </DialogDescription>
+                    </DialogHeader>
                     
-                    <div>
-                      <div className="font-medium">{resident?.preferredName || resident?.fullName}</div>
-                      <div className="text-sm text-muted-foreground">
-                        Room {resident?.roomNumber}
+                    <div className="space-y-6">
+                      {/* Resident Info */}
+                      <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
+                        <Avatar className="h-12 w-12">
+                          <AvatarImage src={resident?.photoUrl} alt={resident?.fullName} />
+                          <AvatarFallback>{getInitials(resident?.fullName || '')}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="font-semibold">{resident?.preferredName || resident?.fullName}</div>
+                          <div className="text-sm text-muted-foreground">Room {resident?.roomNumber}</div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center gap-4">
-                    <div className="text-center">
-                      <div className="text-sm font-medium">{observation.type}</div>
-                      <div className="text-lg font-bold">
-                        {observation.value} {observation.unit}
+                      {/* Vital Reading */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <div className="text-sm font-medium text-muted-foreground">Vital Type</div>
+                          <div className="text-lg font-semibold">{observation.type}</div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="text-sm font-medium text-muted-foreground">Reading</div>
+                          <div className="text-2xl font-bold flex items-center gap-2">
+                            {observation.value} {observation.unit}
+                            {getThresholdIcon(observation.thresholdFlag)}
+                          </div>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-center gap-2">
-                      {getThresholdIcon(observation.thresholdFlag)}
+                      {/* Status & Threshold */}
                       {observation.thresholdFlag && (
-                        <Badge variant={getThresholdColor(observation.thresholdFlag)}>
-                          {observation.thresholdFlag}
-                        </Badge>
+                        <div className="p-4 border rounded-lg">
+                          <div className="flex items-center gap-2 mb-2">
+                            {getThresholdIcon(observation.thresholdFlag)}
+                            <Badge variant={getThresholdColor(observation.thresholdFlag)}>
+                              {observation.thresholdFlag}
+                            </Badge>
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            This reading is outside the normal range and requires attention.
+                          </div>
+                        </div>
                       )}
-                    </div>
 
-                    <div className="text-right text-sm text-muted-foreground">
-                      <div>{format(new Date(observation.recordedAt), 'dd/MM/yyyy')}</div>
-                      <div>{format(new Date(observation.recordedAt), 'HH:mm')}</div>
-                      <div className="text-xs">{observation.recordedBy}</div>
+                      {/* Recording Details */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <div className="text-sm font-medium text-muted-foreground">Recorded Date</div>
+                          <div>{format(new Date(observation.recordedAt), 'EEEE, MMMM d, yyyy')}</div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="text-sm font-medium text-muted-foreground">Recorded Time</div>
+                          <div>{format(new Date(observation.recordedAt), 'h:mm a')}</div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="text-sm font-medium text-muted-foreground">Recorded By</div>
+                        <div>{observation.recordedBy}</div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </DialogContent>
+                </Dialog>
               );
             })}
 
