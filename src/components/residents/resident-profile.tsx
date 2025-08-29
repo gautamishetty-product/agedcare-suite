@@ -252,9 +252,9 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
                         {medication.brandName && (
                           <p className="text-sm text-muted-foreground">Brand: {medication.brandName}</p>
                         )}
-                        <p className="text-sm">
-                          {medication.dose} • {medication.route} • {medication.schedule}
-                        </p>
+                         <p className="text-sm">
+                           {medication.dose} • {medication.route} • {medication.schedule.frequency}
+                         </p>
                         {medication.isPRN && (
                           <Badge variant="outline" className="mt-1 text-xs">PRN</Badge>
                         )}
@@ -534,7 +534,7 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
                     
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>Stage: {wound.stage}</div>
-                      <div>Size: {wound.length} × {wound.width} cm</div>
+                      <div>Size: {wound.size.length} × {wound.size.width} cm</div>
                     </div>
                     
                     <div className="text-xs text-muted-foreground mt-2">
