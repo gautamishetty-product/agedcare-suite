@@ -176,6 +176,7 @@ export const SupportPlanBuilder = ({
   };
 
   const handleApplyTemplate = (templateId: string) => {
+    if (templateId === 'none') return;
     const template = FACILITY_TEMPLATES.find(t => t.id === templateId);
     if (!template) return;
 
@@ -230,7 +231,7 @@ export const SupportPlanBuilder = ({
         status: permissions.canFinalize ? 'FINAL' : 'DRAFT',
         version: existingPlan ? existingPlan.version + 1 : 1,
         tasks: selectedTasks,
-        facilityTemplate,
+        facilityTemplate: facilityTemplate === 'none' ? undefined : facilityTemplate,
         specialInstructions,
         guardianSignatureRequired,
         createdAt: existingPlan?.createdAt || now,
@@ -306,7 +307,7 @@ export const SupportPlanBuilder = ({
                           <SelectValue placeholder="Select template..." />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">No template</SelectItem>
+                          <SelectItem value="none">No template</SelectItem>
                           {FACILITY_TEMPLATES.map(template => (
                             <SelectItem key={template.id} value={template.id}>
                               {template.name}
@@ -314,7 +315,7 @@ export const SupportPlanBuilder = ({
                           ))}
                         </SelectContent>
                       </Select>
-                      {facilityTemplate && (
+                      {facilityTemplate && facilityTemplate !== 'none' && (
                         <Button 
                           variant="outline" 
                           size="sm" 
