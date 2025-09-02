@@ -37,6 +37,7 @@ import {
   getMockProgressNotesByResident
 } from '@/lib/mock-data';
 import CarePlanManager from './care-plan-manager';
+import { SupportPlanManager } from '../support-plans/support-plan-manager';
 import { EditResidentForm } from './edit-resident-form';
 import { DemographicsForm } from './demographics-form';
 import { AboutForm } from './about-form';
@@ -169,6 +170,7 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
           <TabsTrigger value="medications" className="whitespace-nowrap">Medications</TabsTrigger>
           <TabsTrigger value="observations" className="whitespace-nowrap">Observations</TabsTrigger>
           <TabsTrigger value="care-plans" className="whitespace-nowrap">Care Plans</TabsTrigger>
+          <TabsTrigger value="support-plans" className="whitespace-nowrap">Support Plans</TabsTrigger>
           <TabsTrigger value="wounds" className="whitespace-nowrap">Wounds</TabsTrigger>
           <TabsTrigger value="incidents" className="whitespace-nowrap">Incidents</TabsTrigger>
           <TabsTrigger value="assessments" className="whitespace-nowrap">Assessments</TabsTrigger>
@@ -327,6 +329,10 @@ export function ResidentProfile({ residentId }: ResidentProfileProps) {
               <CarePlanManager residentId={residentId} />
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="support-plans">
+          <SupportPlanManager residentId={residentId} currentUserRole="RN" />
         </TabsContent>
 
         <TabsContent value="wounds" className="space-y-4">
